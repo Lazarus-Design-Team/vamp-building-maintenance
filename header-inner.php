@@ -34,7 +34,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </head>
 
 <body <?php body_class(); ?>>
-	<!-- Google Tag Manager (noscript) -->
+		<!-- Google Tag Manager (noscript) -->
 
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MZBWJQHD"
 
@@ -42,7 +42,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <!-- End Google Tag Manager (noscript) -->
 <?php wp_body_open(); ?>
-<div id="page" class="site">
+<div id="page" class="site inner-site">
 <button class="scrollToTopBtn" title="Back To Top">
 			<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50" fill="none">
 			<rect width="50" height="50" fill="#000"/>
@@ -54,15 +54,30 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 			</g>
 			</svg>
 		</button>
-	<header id="masthead" class="site-header">
+	<header id="masthead" class="header-inner site-header">
         <div class="container">
             <div class="row desktop middle-xs">
 
                 <!-- Logo -->
                 <div class="col-xs-3">
                     <div id="logo" class="animate__animated fadeLeft" data-animation="fadeLeft" data-duration="1s">
-                        <?php
+                        <?php						
                         $logo = get_field('branding', 'option')['desktop_colored_logo'];
+						if ( is_singular( 'location' ) && is_single( 'atlanta' ) ){
+							   $logo = get_field('locations_logos', 'option')['desktop_colored_atlanta_logo'];
+							}
+							elseif( is_singular( 'location' ) && is_single( 'columbia' ) ){
+							  $logo = get_field('locations_logos', 'option')['desktop_colored_columbia_logo'];
+							}
+							elseif( is_singular( 'location' ) && is_single( 'greensboro' ) ){
+							  $logo = get_field('locations_logos', 'option')['desktop_colored_greensboro_logo'];
+							}
+							elseif( is_singular( 'location' )  && is_single( 'greenville' )){
+							  $logo = get_field('locations_logos', 'option')['desktop_colored_greenville_logo'];
+							}
+						    elseif( is_singular( 'location' )  && is_single( 'charlotte' )){
+							  $logo = get_field('locations_logos', 'option')['desktop_colored_charlotte_logo'];
+							}
                         if ($logo) {
                             $logo_url = $logo['url'];
                             $logo_mime_type = $logo['mime_type'];
@@ -85,8 +100,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 					<?php
                         wp_nav_menu(array(
                             'theme_location' => 'menu-1',
-                            'menu_id'        => 'primary-menu'                        
-                            
+                            'menu_id'        => 'primary-menu'
                         ));
 					?>
                     </nav>

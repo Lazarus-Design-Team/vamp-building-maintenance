@@ -7,51 +7,30 @@
  * @package Vamp
  */
 
-get_header();
+get_header("inner");
 ?>
 
 	<main id="primary" class="site-main">
-
-		<section class="error-404 not-found">
-			<header class="page-header">
-				<h1 class="page-title"><?php esc_html_e( 'Oops! That page can&rsquo;t be found.', 'vamp' ); ?></h1>
-			</header><!-- .page-header -->
-
-			<div class="page-content">
-				<p><?php esc_html_e( 'It looks like nothing was found at this location. Maybe try one of the links below or a search?', 'vamp' ); ?></p>
-
-					<?php
-					get_search_form();
-
-					the_widget( 'WP_Widget_Recent_Posts' );
-					?>
-
-					<div class="widget widget_categories">
-						<h2 class="widget-title"><?php esc_html_e( 'Most Used Categories', 'vamp' ); ?></h2>
-						<ul>
-							<?php
-							wp_list_categories(
-								array(
-									'orderby'    => 'count',
-									'order'      => 'DESC',
-									'show_count' => 1,
-									'title_li'   => '',
-									'number'     => 10,
-								)
-							);
-							?>
-						</ul>
-					</div><!-- .widget -->
-
-					<?php
-					/* translators: %1$s: smiley */
-					$vamp_archive_content = '<p>' . sprintf( esc_html__( 'Try looking in the monthly archives. %1$s', 'vamp' ), convert_smilies( ':)' ) ) . '</p>';
-					the_widget( 'WP_Widget_Archives', 'dropdown=1', "after_title=</h2>$vamp_archive_content" );
-
-					the_widget( 'WP_Widget_Tag_Cloud' );
-					?>
-
+	<section class="error-404 not-found section-internal-hero bg-blue mb-0 p-0">
+        <div class="container banner-container w-100">
+            <div class="row flex center-xs middle-xs">               
+                <div class="col-xs-12 col-lg-12 w-100 h-100 text-center">
+                    <h1 class="mt-0 mb-0 cl-white animate__animated fadeBottom" data-animation="fadeBottom" data-duration="1.75s"><?php esc_html_e( 'Oops! That page can&rsquo;t be found.', 'vamp' ); ?></h1>                 
+               </div> 
+            </div> 
+        </div>
+        </section> 
+		<section class="error-404 not-found">			
+		<div class="container p-b5">
+			<div class="page-content text-center">
+				<div class="dp-1 cl-dark"><p><?php esc_html_e( 'It looks like nothing was found at this location. Maybe try one of the links below or a search?', 'vamp' ); ?></p></div>
+				<div class="button-list m-t2 center-xs">  										
+					<a class="animate__animated fadeBottom" data-animation="fadeBottom" data-duration="2.5s" tabindex="0" href="<?php echo esc_url( home_url( '/' ) );?>" aria-label="Back Home" title="Back Home">
+						<button class="button cta-btn bg-black cl-white bg-blue-h cl-white-h">Back To Home</button> 
+					</a> 
+				<div>	
 			</div><!-- .page-content -->
+		</div>	
 		</section><!-- .error-404 -->
 
 	</main><!-- #main -->

@@ -7,9 +7,9 @@
  * @package Vamp
  */
 
-if ( ! defined( '_S_VERSION' ) ) {
+ if ( ! defined( '_S_VERSION' ) ) {
 	// Replace the version number of the theme on each release.
-	define( '_S_VERSION', '1.0.0' );
+	define( '_S_VERSION', time() );
 }
 
 /**
@@ -50,8 +50,11 @@ function vamp_setup() {
 	register_nav_menus(
 		array(
 			'menu-1' => esc_html__( 'Primary', 'vamp' ),
+			'menu-mobile' => esc_html__( 'Mobile', 'vamp' ),
+			'menu-footer' => esc_html__( 'Footer', 'vamp' )
 		)
 	);
+	
 
 	/*
 		* Switch default core markup for search form, comment form, and comments
@@ -141,13 +144,93 @@ function vamp_scripts() {
 	wp_enqueue_style( 'vamp-style', get_stylesheet_uri(), array(), _S_VERSION );
 	wp_style_add_data( 'vamp-style', 'rtl', 'replace' );
 
+	wp_enqueue_style('vamp-gfonts', 'https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap', [], null );
+
+
+	/*CSS*/
+	wp_enqueue_style('vamp-flex', get_template_directory_uri() . '/css/flex.css', array(), _S_VERSION);
+	wp_enqueue_style('vamp-responsive-nav-css', get_template_directory_uri() . '/css/responsive-navigation.css', array(), _S_VERSION);
+	wp_enqueue_style('vamp-animate-css', get_template_directory_uri() . '/css/animate-scroll.css', array(), _S_VERSION);	
+	wp_enqueue_style('vamp-main-css', get_template_directory_uri() . '/css/vamp.css', array(), _S_VERSION);
+	wp_enqueue_style('vamp-glider-css', get_template_directory_uri() . '/css/glider.min.css', array(), _S_VERSION);  
+	wp_enqueue_style('vamp-slick-css', get_template_directory_uri() . '/css/slick.min.css', array(), _S_VERSION);  
+	wp_enqueue_style('vamp-plyr-css', get_template_directory_uri() . '/css/plyr.css', array(), _S_VERSION); 
+	
+	
+	/*JS*/
+	wp_enqueue_script('jquery');
 	wp_enqueue_script( 'vamp-navigation', get_template_directory_uri() . '/js/navigation.js', array(), _S_VERSION, true );
+	wp_enqueue_script( 'vamp-responsive-navigation', get_template_directory_uri() . '/js/responsive-navigation.js', array(), _S_VERSION, true );
+	wp_enqueue_script( 'vamp-animate-js', get_template_directory_uri() . '/js/animate-scroll.js', array(), _S_VERSION, true );	
+	wp_enqueue_script('vamp-plyr-js', get_template_directory_uri() . '/js/plyr.polyfilled.js', array(), _S_VERSION, true);
+
+	wp_enqueue_style('vamp-owl-css', get_template_directory_uri() . '/css/owl.carousel.min.css', array(), _S_VERSION);
+	wp_enqueue_style('vamp-owltheme-css', get_template_directory_uri() . '/css/owl.theme.default.min.css', array(), _S_VERSION);
+	wp_enqueue_script( 'vamp-owl-js', get_template_directory_uri() . '/js/owl.carousel.min.js', array(), _S_VERSION, true );
+	wp_enqueue_script( 'vamp-counters-js', get_template_directory_uri() . '/js/counters.js', array(), _S_VERSION, true );
+	wp_enqueue_script( 'vamp-glider-js', get_template_directory_uri() . '/js/glider.min.js', array(), _S_VERSION, true );
+	wp_enqueue_script( 'vamp-slick-js', get_template_directory_uri() . '/js/slick.min.js', array(), _S_VERSION, true );
+
+	if( ( is_single() && 'service' == get_post_type() ) || is_page_template( 'templates/page-about.php' )  ): 	
+		wp_enqueue_script('vamp-accordeon-js', get_template_directory_uri() . '/js/accordeon.js', array(), _S_VERSION, true);
+	endif;
+
+	wp_enqueue_script( 'vamp-main-js', get_template_directory_uri() . '/js/vamp.js', array(), _S_VERSION, true );
+	
+
+
 
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
 		wp_enqueue_script( 'comment-reply' );
 	}
 }
 add_action( 'wp_enqueue_scripts', 'vamp_scripts' );
+
+/**
+ * Disable Gutenberg For Pages
+ */
+if (is_admin()) :
+    add_filter('use_block_editor_for_post', 'laz_disable_block_for_post_type', 10, 2);
+endif;
+
+function laz_disable_block_for_post_type($bool, $post) {
+    if ('page' === $post->post_type || 'post' === $post->post_type || 'service' === $post->post_type || 'location' === $post->post_type) :
+        return false;
+    endif;
+
+    return $bool;
+}
+/**
+ * Activate Accessibility for links
+ */
+function add_attribute_to_current_menu_item( $atts, $item, $args ) {
+    
+	$atts['aria-label'] = $item->title;
+	$atts['tabindex'] = 0;
+    return $atts;
+}
+add_filter( 'nav_menu_link_attributes', 'add_attribute_to_current_menu_item', 10, 3 );
+
+/**
+ * Register Thumbnail Sizes
+ */
+function mobile_thumbnail_size() {
+    add_image_size('mobile', 500, 0, true);
+	
+}
+add_action('after_setup_theme', 'mobile_thumbnail_size');
+/**
+ *	ENABLED FILE *.svg
+ **/
+
+ add_filter('upload_mimes', 'custom_upload_mimes');
+ function custom_upload_mimes ( $existing_mimes=array() ) {
+	 // add your extension to the array
+	
+	 $existing_mimes['svg'] = 'image/svg+xml';
+	 return $existing_mimes;
+ }
+
 
 /**
  * Implement the Custom Header feature.
@@ -168,6 +251,9 @@ require get_template_directory() . '/inc/template-functions.php';
  * Customizer additions.
  */
 require get_template_directory() . '/inc/customizer.php';
+
+/* Implement General Theme Settings */
+require get_template_directory() . '/inc/general-settings.php';
 
 /**
  * Load Jetpack compatibility file.

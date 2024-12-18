@@ -9,12 +9,21 @@
 
 ?>
 
-<section class="no-results not-found">
-	<header class="page-header">
-		<h1 class="page-title"><?php esc_html_e( 'Nothing Found', 'vamp' ); ?></h1>
-	</header><!-- .page-header -->
+<section class="no-results not-found p-t0">
+	<section class="section-internal-hero bg-blue mb-0 p-0">
+        <div class="container banner-container w-100">
+            <div class="row flex center-xs middle-xs">               
+                <div class="col-xs-12 col-lg-12 w-100 h-100 text-center">
+                    <h1 class="mt-0 mb-0 cl-white animate__animated fadeBottom" data-animation="fadeBottom" data-duration="1.75s"><?php esc_html_e( 'Nothing Found', 'vamp' ); ?></h1>                 
+               </div> 
+            </div> 
+        </div>
+        </section>  
 
 	<div class="page-content">
+		<div class="container p-b5">
+			<div class="row">
+				<div class="col-xs-12 col-lg-12">
 		<?php
 		if ( is_home() && current_user_can( 'publish_posts' ) ) :
 
@@ -47,5 +56,8 @@
 
 		endif;
 		?>
+						</div>
+			</div>
+		</div>
 	</div><!-- .page-content -->
 </section><!-- .no-results -->
